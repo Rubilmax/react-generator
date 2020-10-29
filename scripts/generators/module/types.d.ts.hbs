@@ -1,0 +1,10 @@
+declare interface I{{ properCase name }} {}
+
+declare interface {{ properCase name }} extends I{{ properCase name }} {}
+
+declare interface {{ properCase name }}State extends NormalizedState<I{{ properCase name }}> {
+  isCreating: boolean;
+  isFetching: string[];
+  isUpdating: string;
+  isDeleting: string;
+}

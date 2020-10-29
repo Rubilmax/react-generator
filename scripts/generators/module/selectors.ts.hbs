@@ -1,0 +1,20 @@
+import { DefaultRootState } from 'react-redux';
+
+export const select{{ properCase name }}sIds = (state: DefaultRootState) => state.{{ camelCase name }}s.allIds;
+
+export const select{{ properCase name }}sByIds = (state: DefaultRootState) => state.{{ camelCase name }}s.byIds;
+
+export const select{{ properCase name }} = (id: string) => (
+  state: DefaultRootState,
+): WithId<I{{ properCase name }}> | undefined => select{{ properCase name }}sByIds(state)[id];
+
+export const selectIsCreating = (state: DefaultRootState) => state.{{ camelCase name }}s.isCreating;
+
+export const selectIsFetching = (...ids: string[]) => (state: DefaultRootState) =>
+  ids.some((id) => state.{{ camelCase name }}s.isFetching.includes(id));
+
+export const selectIsUpdating = (id: string) => (state: DefaultRootState) =>
+  state.{{ camelCase name }}s.isUpdating === id;
+
+export const selectIsDeleting = (id: string) => (state: DefaultRootState) =>
+  state.{{ camelCase name }}s.isDeleting === id;

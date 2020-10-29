@@ -1,0 +1,25 @@
+import { useSelector } from 'react-redux';
+
+import * as selectors from './{{ properCase name }}.selectors';
+
+import { useDeepMemo } from 'services/hooks';
+import { denormalize, useNormalizedState } from 'services/normalization';
+
+export const use{{ properCase name }} = (id: string) => use{{ properCase name }}s([id])[0];
+
+export const use{{ properCase name }}s = (ids: string[]) => {
+  const normalizedState = useNormalizedState(['{{ camelCase name }}s']);
+
+  return useDeepMemo(() => denormalize({ {{ camelCase name }}s: ids }, normalizedState).{{ camelCase name }}s!.filter(Boolean), [
+    ids,
+    normalizedState,
+  ]);
+};
+
+export const useIsCreating = () => useSelector(selectors.selectIsCreating);
+
+export const useIsFetching = (id?: string) => useSelector(selectors.selectIsFetching(id));
+
+export const useIsUpdating = (id: string) => useSelector(selectors.selectIsUpdating(id));
+
+export const useIsDeleting = (id: string) => useSelector(selectors.selectIsDeleting(id));

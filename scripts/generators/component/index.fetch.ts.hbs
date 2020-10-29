@@ -1,0 +1,15 @@
+import {{ properCase name }} from './{{ properCase name }}.page';
+
+import { fetchUsers } from 'modules/User/User.actions';
+import { fetchBalance } from 'modules/Balance/Balance.actions';
+import { fetchTransactions } from 'modules/Transaction/Transaction.actions';
+import { fetchDistributions } from 'modules/Distribution/Distribution.actions';
+
+import * as userSelectors from 'modules/User/User.selectors';
+import * as balanceSelectors from 'modules/Balance/Balance.selectors';
+import * as transactionSelectors from 'modules/Transaction/Transaction.selectors';
+import * as distributionSelectors from 'modules/Distribution/Distribution.selectors';
+
+import { fetch } from 'services/hoc';
+
+export default fetch((state, queryParams) => {})({{ properCase name }});

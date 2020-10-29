@@ -1,0 +1,79 @@
+import { call, put, takeEvery } from 'redux-saga/effects';
+
+import * as actions from './{{ properCase name }}.actions';
+
+import * as firestore from 'services/firebase/firestore';
+
+function* create{{ properCase name }}(action: ReturnType<typeof actions.create{{ properCase name }}>) {
+  try {
+    const {{ camelCase name }}Data = action.payload;
+    const {{ camelCase name }}Id: string = yield call(firestore.add<I{{ properCase name }}>(`{{ camelCase name }}s`, {{ camelCase name }}Data));
+
+    const {{ camelCase name }}: WithId<I{{ properCase name }}> = { ...{{ camelCase name }}Data, id: {{ camelCase name }}Id };
+    yield put(actions.create{{ properCase name }}Success({{ camelCase name }}));
+  } catch (error) {
+    yield put(actions.create{{ properCase name }}Error(error));
+  }
+}
+
+function* fetch{{ properCase name }}s(action: ReturnType<typeof actions.fetch{{ properCase name }}s>) {
+  try {
+    const {{ camelCase name }}sIds = action.payload;
+    if ({{ camelCase name }}sIds.length === 0) return;
+
+    const {{ camelCase name }}s: WithId<I{{ properCase name }}>[] = yield call(
+      firestore.fetch(firestore.collection<I{{ properCase name }}>('{{ camelCase name }}s').where(firestore.documentId, 'in', {{ camelCase name }}sIds)),
+    );
+
+    yield put(actions.fetch{{ properCase name }}sSuccess({{ camelCase name }}s));
+  } catch (error) {
+    yield put(actions.fetch{{ properCase name }}sError(error));
+  }
+}
+
+function* fetch{{ properCase name }}(action: ReturnType<typeof actions.fetch{{ properCase name }}>) {
+  try {
+    const {{ camelCase name }}Id = action.payload;
+
+    const {{ camelCase name }}: WithId<I{{ properCase name }}> = yield call(
+      firestore.get<I{{ properCase name }}>(`{{ camelCase name }}s/${ {{ camelCase name }}Id }`),
+    );
+    if (!{{ camelCase name }}) return;
+
+    yield put(actions.fetch{{ properCase name }}Success({{ camelCase name }}));
+  } catch (error) {
+    yield put(actions.fetch{{ properCase name }}Error(error));
+  }
+}
+
+function* update{{ properCase name }}(action: ReturnType<typeof actions.update{{ properCase name }}>) {
+  try {
+    const { id: {{ camelCase name }}Id, ...{{ camelCase name }}Data } = action.payload;
+
+    yield call(firestore.update<I{{ properCase name }}>(`{{ camelCase name }}s/${ {{ camelCase name }}Id }`, {{ camelCase name }}Data));
+
+    yield put(actions.update{{ properCase name }}Success(action.payload));
+  } catch (error) {
+    yield put(actions.update{{ properCase name }}Error(error));
+  }
+}
+
+function* delete{{ properCase name }}(action: ReturnType<typeof actions.delete{{ properCase name }}>) {
+  try {
+    const {{ camelCase name }}Id = action.payload;
+
+    yield call(firestore.remove(`{{ camelCase name }}s/${ {{ camelCase name }}Id }`));
+
+    yield put(actions.delete{{ properCase name }}Success({{ camelCase name }}Id));
+  } catch (error) {
+    yield put(actions.delete{{ properCase name }}Error(error));
+  }
+}
+
+export default function* {{ camelCase name }}Saga() {
+  yield takeEvery(actions.create{{ properCase name }}.type, create{{ properCase name }});
+  yield takeEvery(actions.fetch{{ properCase name }}s.type, fetch{{ properCase name }}s);
+  yield takeEvery(actions.fetch{{ properCase name }}.type, fetch{{ properCase name }});
+  yield takeEvery(actions.update{{ properCase name }}.type, update{{ properCase name }});
+  yield takeEvery(actions.delete{{ properCase name }}.type, delete{{ properCase name }});
+}
