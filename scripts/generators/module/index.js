@@ -55,12 +55,6 @@ module.exports = {
         templateFile: `./module/selectors.ts.hbs`,
         abortOnFail: true,
       },
-      {
-        type: 'add',
-        path: `../../src/modules/${data.name}/${data.name}.hooks.ts`,
-        templateFile: `./module/hooks.ts.hbs`,
-        abortOnFail: true,
-      },
     ];
 
     if (data.sagas) {
