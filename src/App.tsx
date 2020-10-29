@@ -1,26 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Helmet } from 'react-helmet';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
+import { PersistGate } from 'redux-persist/integration/react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+import { store, persistor, history } from 'modules/store';
+import createTheme from 'services/theme';
+
+import AppRouter from './AppRouter';
+
+const App = () => (
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <MuiThemeProvider theme={createTheme()}>
+        <ConnectedRouter history={history}>
+          <Helmet titleTemplate="React App - %s" defaultTitle="React App" />
+          <CssBaseline />
+          <AppRouter />
+        </ConnectedRouter>
+      </MuiThemeProvider>
+    </PersistGate>
+  </Provider>
+);
 
 export default App;

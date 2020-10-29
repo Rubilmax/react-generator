@@ -1,0 +1,12 @@
+import compose from 'recompose/compose';
+{{#if wantConnect}}
+import { connect } from 'react-redux';
+{{/if}}
+
+import {{ properCase name }}, { Props } from './{{ properCase name }}.component';
+
+export default compose<Props, unknown>(
+{{#if wantConnect}}
+  connect((state) => ({}), {}),
+{{/if}}
+)({{ properCase name }});

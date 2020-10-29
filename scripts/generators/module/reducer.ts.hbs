@@ -1,23 +1,22 @@
-import _merge from 'lodash/merge';
 import _union from 'lodash/union';
 import _without from 'lodash/without';
-import _cloneDeep from 'lodash/cloneDeep';
 import { createReducer } from '@reduxjs/toolkit';
 
 import * as actions from './{{ properCase name }}.actions';
 
-import { normalize } from 'services/normalization';
-
 const initialState: {{ properCase name }}State = {
+{{#if isEntity}}
   allIds: [],
   byIds: {},
   isCreating: false,
   isFetching: [],
   isUpdating: '',
   isDeleting: '',
+{{/if}}
 };
 
 export default createReducer<{{ properCase name }}State>(initialState, {
+{{#if isEntity}}
   [actions.create{{ properCase name }}.type]: (
     state: {{ properCase name }}State,
     action: ReturnType<typeof actions.create{{ properCase name }}>,
@@ -50,6 +49,38 @@ export default createReducer<{{ properCase name }}State>(initialState, {
     },
     isCreating: false,
   }),
+  [actions.fetch{{ properCase name }}.type]: (
+    state: {{ properCase name }}State,
+    action: ReturnType<typeof actions.fetch{{ properCase name }}>,
+  ): {{ properCase name }}State => ({
+    ...state,
+    isFetching: [action.payload],
+  }),
+  [actions.fetch{{ properCase name }}Error.type]: (
+    state: {{ properCase name }}State,
+    action: ReturnType<typeof actions.fetch{{ properCase name }}Error>,
+  ): {{ properCase name }}State => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(action.payload);
+    }
+
+    return {
+      ...state,
+      isFetching: [],
+    };
+  },
+  [actions.fetch{{ properCase name }}Success.type]: (
+    state: {{ properCase name }}State,
+    action: ReturnType<typeof actions.fetch{{ properCase name }}Success>,
+  ): {{ properCase name }}State => ({
+    ...state,
+    allIds: _union(state.allIds, [action.payload.id]),
+    byIds: {
+      ...state.byIds,
+      [action.payload.id]: action.payload,
+    },
+    isFetching: _without(state.isFetching, action.payload.id),
+  }),
   [actions.fetch{{ properCase name }}s.type]: (
     state: {{ properCase name }}State,
     action: ReturnType<typeof actions.fetch{{ properCase name }}s>,
@@ -74,53 +105,26 @@ export default createReducer<{{ properCase name }}State>(initialState, {
     state: {{ properCase name }}State,
     action: ReturnType<typeof actions.fetch{{ properCase name }}sSuccess>,
   ): {{ properCase name }}State => {
-    const normalized{{ properCase name }}s = normalize({ {{ camelCase name }}s: action.payload });
+    const newByIds = action.payload.reduce<{ [id: string]: {{ properCase name }} }>(
+      (acc, {{ camelCase name }}) => ({
+        ...acc,
+        [{{ camelCase name }}.id]: {{ camelCase name }}
+      }),
+      {},
+    );
 
     return {
       ...state,
-      allIds: _union(state.allIds, normalized{{ properCase name }}s.result.{{ camelCase name }}s),
+      allIds: _union(
+        state.allIds,
+        action.payload.map(({{ camelCase name }}) => {{ camelCase name }}.id),
+      ),
       byIds: {
         ...state.byIds,
-        ...normalized{{ properCase name }}s.entities.{{ camelCase name }}s,
+        ...newByIds,
       },
       isFetching: [],
-    };
-  },
-  [actions.fetch{{ properCase name }}.type]: (
-    state: {{ properCase name }}State,
-    action: ReturnType<typeof actions.fetch{{ properCase name }}>,
-  ): {{ properCase name }}State => ({
-    ...state,
-    isFetching: [action.payload],
-  }),
-  [actions.fetch{{ properCase name }}Error.type]: (
-    state: {{ properCase name }}State,
-    action: ReturnType<typeof actions.fetch{{ properCase name }}Error>,
-  ): {{ properCase name }}State => {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(action.payload);
     }
-
-    return {
-      ...state,
-      isFetching: [],
-    };
-  },
-  [actions.fetch{{ properCase name }}Success.type]: (
-    state: {{ properCase name }}State,
-    action: ReturnType<typeof actions.fetch{{ properCase name }}Success>,
-  ): {{ properCase name }}State => {
-    const normalized{{ properCase name }}s = normalize({ {{ camelCase name }}s: [action.payload] });
-
-    return {
-      ...state,
-      allIds: _union(state.allIds, normalized{{ properCase name }}s.result.{{ camelCase name }}s),
-      byIds: {
-        ...state.byIds,
-        ...normalized{{ properCase name }}s.entities.{{ camelCase name }}s,
-      },
-      isFetching: [],
-    };
   },
   [actions.update{{ properCase name }}.type]: (
     state: {{ properCase name }}State,
@@ -145,20 +149,15 @@ export default createReducer<{{ properCase name }}State>(initialState, {
   [actions.update{{ properCase name }}Success.type]: (
     state: {{ properCase name }}State,
     action: ReturnType<typeof actions.update{{ properCase name }}Success>,
-  ): {{ properCase name }}State => {
-    const {{ camelCase name }} = _merge(_cloneDeep(state.byIds[action.payload.id]), action.payload);
-    const normalizedUsers = normalize({ {{ camelCase name }}s: [{{ camelCase name }}] });
-
-    return {
-      ...state,
-      allIds: _union(state.allIds, normalizedUsers.result.{{ camelCase name }}s),
-      byIds: {
-        ...state.byIds,
-        ...normalizedUsers.entities.{{ camelCase name }}s,
-      },
-      isUpdating: '',
-    };
-  },
+  ): {{ properCase name }}State => ({
+    ...state,
+    allIds: _union(state.allIds, [action.payload.id]),
+    byIds: {
+      ...state.byIds,
+      [action.payload.id]: action.payload,
+    },
+    isUpdating: '',
+  }),
   [actions.delete{{ properCase name }}.type]: (
     state: {{ properCase name }}State,
     action: ReturnType<typeof actions.delete{{ properCase name }}>,
@@ -193,4 +192,5 @@ export default createReducer<{{ properCase name }}State>(initialState, {
       isDeleting: '',
     };
   },
+{{/if}}
 });

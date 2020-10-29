@@ -4,12 +4,12 @@ module.exports = {
     {
       type: 'input',
       name: 'moduleName',
-      message: 'Name of the EXISTING module',
+      message: 'What module does this action belongs to?',
     },
     {
       type: 'input',
       name: 'actionName',
-      message: 'Name of the action',
+      message: 'What is the name of the action?',
     },
   ],
   actions: (data) => {

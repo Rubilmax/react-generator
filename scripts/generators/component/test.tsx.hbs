@@ -1,0 +1,17 @@
+import React from 'react';
+import { shallow } from 'enzyme';
+
+import {{ properCase name }} from '.';
+
+describe('{{ properCase name }} component', () => {
+  const props = {};
+  let wrapper = shallow(<div />);
+
+  beforeEach(() => {
+    wrapper = shallow(<{{ properCase name }} {...props} />);
+  });
+
+  it('should exist', () => {
+    expect(wrapper.exists()).toEqual(true);
+  });
+});

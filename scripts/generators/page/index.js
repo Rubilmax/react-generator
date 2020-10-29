@@ -1,12 +1,12 @@
 const { componentExists } = require('../utils');
 
 module.exports = {
-  description: 'Add a component',
+  description: 'Add a page',
   prompts: [
     {
       type: 'input',
       name: 'name',
-      message: 'How should this component be called?',
+      message: 'How should this page be called?',
       default: 'Form',
       validate: (value) => {
         if (/.+/.test(value)) {
