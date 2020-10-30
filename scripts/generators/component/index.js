@@ -19,7 +19,7 @@ module.exports = {
     {
       type: 'input',
       name: 'path',
-      message: 'Where should it be created (path relative to src directory)?',
+      message: 'Where should it be created (path relative to root directory)?',
       default: 'components',
     },
     {
@@ -33,6 +33,13 @@ module.exports = {
       name: 'wantConnect',
       default: true,
       message: 'Do you want to connect your component to redux?',
+      when: (data) => data.hasContainer,
+    },
+    {
+      type: 'confirm',
+      name: 'wantMemo',
+      default: true,
+      message: 'Do you want to memoize props?',
       when: (data) => data.hasContainer,
     },
   ],
@@ -51,31 +58,31 @@ module.exports = {
     return actions.concat([
       {
         type: 'add',
-        path: `../../src/${data.path}/{{properCase name}}/{{properCase name}}.component.tsx`,
+        path: `../../${data.path}/{{properCase name}}/{{properCase name}}.component.tsx`,
         templateFile: `./component/component.tsx.hbs`,
         abortOnFail: true,
       },
       {
         type: 'add',
-        path: `../../src/${data.path}/{{properCase name}}/{{properCase name}}.hooks.ts`,
+        path: `../../${data.path}/{{properCase name}}/{{properCase name}}.hooks.ts`,
         templateFile: `./component/hooks.ts.hbs`,
         abortOnFail: true,
       },
       {
         type: 'add',
-        path: `../../src/${data.path}/{{properCase name}}/{{properCase name}}.style.ts`,
+        path: `../../${data.path}/{{properCase name}}/{{properCase name}}.style.ts`,
         templateFile: `./component/style.ts.hbs`,
         abortOnFail: true,
       },
       {
         type: 'add',
-        path: `../../src/${data.path}/{{properCase name}}/{{properCase name}}.test.tsx`,
+        path: `../../${data.path}/{{properCase name}}/{{properCase name}}.test.tsx`,
         templateFile: `./component/test.tsx.hbs`,
         abortOnFail: true,
       },
       {
         type: 'add',
-        path: `../../src/${data.path}/{{properCase name}}/index.ts`,
+        path: `../../${data.path}/{{properCase name}}/index.ts`,
         templateFile: `./component/index.ts.hbs`,
         abortOnFail: true,
       },
