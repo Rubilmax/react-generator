@@ -1,15 +1,26 @@
 const fs = require('fs');
 const path = require('path');
 
-const fullComponents = fs.readdirSync(path.join(__dirname, '../../src/components'));
-const pageComponents = fs.readdirSync(path.join(__dirname, '../../src/pages'));
-const components = pageComponents.concat(fullComponents);
+const getSubComponents = (dir) =>
+  fs.readdirSync(dir).reduce((acc, dirPath) => {
+    const componentsPath = path.join(dir, dirPath, 'components');
+    const pagesPath = path.join(dir, dirPath, 'pages');
 
-const modules = fs.readdirSync(path.join(__dirname, '../../src/modules'));
-const services = fs.readdirSync(path.join(__dirname, '../../src/services'));
+    return {
+      ...acc,
+      [dirPath]: path.join(dir, dirPath),
+      ...(fs.existsSync(componentsPath) ? getSubComponents(componentsPath) : {}),
+      ...(fs.existsSync(pagesPath) ? getSubComponents(pagesPath) : {}),
+    };
+  }, {});
+
+const components = { ...getSubComponents('src/components'), ...getSubComponents('src/pages') };
+const modules = fs.readdirSync('src/modules');
+const services = fs.readdirSync('src/services');
 
 module.exports = {
-  componentExists: (component) => components.indexOf(component) >= 0,
-  moduleExists: (module) => modules.indexOf(module) >= 0,
-  serviceExists: (service) => services.indexOf(service) >= 0,
+  componentExists: (component) => Object.keys(components).includes(component),
+  moduleExists: (module) => modules.includes(module),
+  serviceExists: (service) => services.includes(service),
+  getComponentPath: (component) => components[component],
 };

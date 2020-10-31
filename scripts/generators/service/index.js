@@ -22,13 +22,13 @@ module.exports = {
       type: 'add',
       path: `../../src/services/{{camelCase name}}.ts`,
       templateFile: `./service/service.ts.hbs`,
-      abortOnFail: true,
+      abortOnFail: false,
     },
     {
       type: 'add',
       path: `../../src/services/__test__/{{camelCase name}}.test.ts`,
       templateFile: `./service/service.test.ts.hbs`,
-      abortOnFail: true,
+      abortOnFail: false,
     },
   ],
 };
