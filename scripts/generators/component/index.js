@@ -20,7 +20,7 @@ module.exports = {
       type: 'input',
       name: 'path',
       message: 'Where should it be created (path relative to root directory)?',
-      default: 'components',
+      default: 'src/components',
     },
     {
       type: 'confirm',
