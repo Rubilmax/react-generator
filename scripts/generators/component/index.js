@@ -49,7 +49,7 @@ module.exports = {
     if (data.hasContainer) {
       actions.push({
         type: 'add',
-        path: `../../src/${data.path}/{{properCase name}}/{{properCase name}}.container.ts`,
+        path: `../../${data.path}/{{properCase name}}/{{properCase name}}.container.ts`,
         templateFile: `./component/container.ts.hbs`,
         abortOnFail: true,
       });

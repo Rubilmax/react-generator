@@ -6,19 +6,12 @@ import compose from 'recompose/compose';
 import { connect, DefaultRootState } from 'react-redux';
 {{/if}}
 
-import {{ properCase name }}, {
-  Props,
-{{#if wantConnect}}
-  StateProps,
-  DispatchProps,
-{{/if}}
-  OwnProps
-} from './{{ properCase name }}.component';
+import {{ properCase name }}, { Props, OwnProps } from './{{ properCase name }}.component';
 {{#if wantConnect}}
 
-const mapStateToProps = (state: DefaultRootState) => ({});
+export const mapStateToProps = (state: DefaultRootState) => ({});
 
-const mapDispatchToProps = {};
+export const mapDispatchToProps = {};
 {{/if}}
 
 export default compose<Props, OwnProps>(
