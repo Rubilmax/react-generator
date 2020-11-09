@@ -1,5 +1,7 @@
 {{#if wantConnect}}
-export interface StateProps {}
+import { mapStateToProps, mapDispatchToProps } from './{{ properCase name }}.container';
 
-export interface DispatchProps {}
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+type DispatchProps = typeof mapDispatchToProps;
 {{/if}}
