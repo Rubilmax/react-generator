@@ -5,11 +5,11 @@ export const select{{ properCase name }}sIds = (state: DefaultRootState) => stat
 
 export const select{{ properCase name }}sByIds = (state: DefaultRootState) => state.{{ camelCase name }}s.byIds;
 
-export const selectModule = (id: string) => (state: DefaultRootState) =>
-  !!id ? selectModulesByIds(state)[id] : undefined;
+export const select{{ properCase name }} = (id: string) => (state: DefaultRootState) =>
+  !!id ? select{{ properCase name }}sByIds(state)[id] : undefined;
 
-export const selectModules = (ids: string[]) => (state: DefaultRootState) =>
-  ids.map((id) => selectModule(id)(state));
+export const select{{ properCase name }}s = (ids: string[]) => (state: DefaultRootState) =>
+  ids.map((id) => select{{ properCase name }}(id)(state));
 
 export const selectIsCreating = (state: DefaultRootState) => state.{{ camelCase name }}s.isCreating;
 
